@@ -23,12 +23,17 @@ const term = (() => {
 })();
 
 
-const refreshGif = (parameter = "cats") => {
-    fetch(`https://api.giphy.com/v1/gifs/translate?api_key=7TcSMtoQvGofAH3yzmzGA74iP8kq0bSk&s=${parameter}`, {mode: 'cors'})
-        .then((response) => response.json())
-        .then((response) => {
-            img.src = response.data.images.original.url;
-        })
+async function refreshGif(parameter = "cats") {
+    // fetch(`https://api.giphy.com/v1/gifs/translate?api_key=7TcSMtoQvGofAH3yzmzGA74iP8kq0bSk&s=${parameter}`, {mode: 'cors'})
+    //     .then((response) => response.json())
+    //     .then((response) => {
+    //         img.src = response.data.images.original.url;
+    //     });
+
+    const promise = await fetch(`https://api.giphy.com/v1/gifs/translate?api_key=7TcSMtoQvGofAH3yzmzGA74iP8kq0bSk&s=${parameter}`, {mode: 'cors'});
+    const response = await promise.json();
+    const imgSource = await response.data.images.original.url;
+    img.src = imgSource;
 };
 
 const showError = () => {
@@ -41,7 +46,7 @@ const removeError = () => {
 
 const searchBtnClick = () => {
     const searchInputValue = searchInput.value.trim();
-    if(searchInputValue !== ""){
+    if(searchInputValue !== "") {
         refreshGif(searchInputValue);
         term.updateCurrentTermValue(searchInputValue);
         term.renderCurrentTerm();
@@ -56,5 +61,6 @@ const searchBtnClick = () => {
 term.renderCurrentTerm();
 refreshGif(term.getCurrentTermValue());
 searchBtn.addEventListener("click", searchBtnClick);
-refreshBtn.addEventListener('click', refreshGif);
-
+refreshBtn.addEventListener('click', () => {
+    refreshGif(term.getCurrentTermValue());
+});
