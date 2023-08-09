@@ -50,10 +50,12 @@ const searchBtnClick = () => {
         refreshGif(searchInputValue);
         term.updateCurrentTermValue(searchInputValue);
         term.renderCurrentTerm();
-        searchInput.classList = 'valid';
+        searchInput.classList = 'valid-input';
+        searchBtn.classList = 'valid-btn';
         removeError();
     } else {
-        searchInput.classList = 'invalid';
+        searchInput.classList = 'invalid-input';
+        searchBtn.classList = 'invalid-btn';
         showError();
     }
 };
